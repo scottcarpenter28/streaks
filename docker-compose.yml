@@ -1,0 +1,27 @@
+version: '3'
+services:
+  postgres:
+    image: postgres
+    container_name: postgres_streaks
+    networks:
+        - dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_streaks:/var/lib/postgres_streaks
+    environment:
+      POSTGRES_DB: streaks
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+  adminer:
+    image: adminer
+    networks:
+        - dev
+    ports: 
+      - 8080:8080
+
+volumes:
+  postgres_streaks:
+
+networks:
+  dev:

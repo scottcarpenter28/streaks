@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from chains.api.utils import JSONResponse
-from ..forms import NewUser
+from chains.forms import NewUser
 
 
 @api_view(["POST"])
@@ -11,7 +11,7 @@ def create_user(request) -> Response:
     form = NewUser(request.data)
     if form.is_valid():
         data = form.cleaned_data
-        User.create_user(
+        User.objects.create_user(
             username=data.get("username"),
             email=data.get("email"),
             password=data.get("password1")
@@ -21,7 +21,10 @@ def create_user(request) -> Response:
         response = JSONResponse(
             message="An error occurred while creating your account",
             error=True,
-            data=form
+            data={
+                "errors": form.errors.as_json(),
+                "fields": form.cleaned_data
+            }
         )
     return response.response()
 

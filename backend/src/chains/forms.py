@@ -23,11 +23,16 @@ class NewUser(forms.Form):
     def clean(self):
         data = super().clean()
         username = data.get("username")
+        email = data.get("email")
         password1 = data.get("password1")
         password2 = data.get("password2")
-        if username and User.objects.filter(username=username):
-            self.add_error("username", f"The username {
-                           username} already exsists.")
+        if username and User.objects.filter(username=username).exists():
+            self.add_error(
+                "username",
+                f"The username {username} already exists."
+            )
+        if email and User.objects.filter(email=email).exists():
+            self.add_error("email", f"The email {email} has already been used")
         if password1 != password2:
             self.add_error("password1", "Passwords did not match")
         return data

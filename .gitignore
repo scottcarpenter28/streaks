@@ -1,2 +1,5 @@
 .env
 .venv
+/backend/src/chains/__pycache__
+__pycache__
+.pyc
